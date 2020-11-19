@@ -1,0 +1,3 @@
+[submodule "client/lib/QCBOR"]
+	path = client/lib/QCBOR
+	url = https://github.com/laurencelundblade/QCBOR.git
