@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 use serde_cbor;
+use serde_json;
 use warp::{hyper::body, Filter};
 
 #[derive(Deserialize, Serialize, Debug)]
@@ -22,7 +23,7 @@ async fn main() {
         .and(warp::body::content_length_limit(1024))
         .and(warp::body::bytes())
         .map(|id, data: body::Bytes| {
-            println!("Message from id: {}", id);
+            println!("Message from id: {} size: {} bytes", id, data.len());
 
             // Get the telemetry
             let telemetry: TelemetryData = match serde_cbor::from_slice(&data) {
@@ -30,7 +31,7 @@ async fn main() {
                 Err(_) => {
                     // Create error
                     let error = TelemetryError {
-                        error: "Unable to parse telemetry data.".to_string(),
+                        error: "Unable to parse CBOR telemetry data.".to_string(),
                     };
 
                     // Return error
@@ -39,6 +40,21 @@ async fn main() {
             };
 
             println!("Telemetry: {:?}", telemetry);
+
+            // Now encode to json
+            let json = match serde_json::to_string(&telemetry) {
+                Ok(j) => j,
+                Err(_) => {
+                    // Create error
+                    let error = TelemetryError {
+                        error: "Unable to parse telemetry data to JSON.".to_string(),
+                    };
+
+                    // Return error
+                    return warp::reply::json(&error);
+                }
+            };
+            println!("JSON message size: {} bytes", json.len());
 
             warp::reply::json(&{})
         });
