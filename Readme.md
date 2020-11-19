@@ -23,7 +23,13 @@ cbor-example on  master [+?] is 📦 v0.1.0 via 🦀 v1.47.0
 
 ## Building the C code
 
-This code does use `cmake` please be sure to install before you continue. You should also have `curl` installed.
+If youh haven't already make sure you pull the submodule(s) for this project using:
+
+```
+> git submodule update --init
+```
+
+Also, this code does use `cmake` please be sure to install before you continue. You should also have `curl` installed.
 
 ```
 > brew install cmake curl

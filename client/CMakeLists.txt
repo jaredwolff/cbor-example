@@ -10,10 +10,6 @@ include_directories(lib/QCBOR/inc/)
 # Include sources 
 file(GLOB QCBOR_FILES lib/QCBOR/src/*.c)
 
-# For compilers to find curl you may need to set:
-#   export LDFLAGS="-L/usr/local/opt/curl/lib"
-#  export CPPFLAGS="-I/usr/local/opt/curl/include"
-
 # Libcurl
 link_libraries(curl)
 
